@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($url) {
         $db = parse_url($url);
         $host = $db["host"];
-        $port = $db["port"];
+        $port = 5432;
         $user = $db["user"];
         $password = $db["pass"];
         $dbname = ltrim($db["path"], "/");
