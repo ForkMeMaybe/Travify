@@ -1,74 +1,3 @@
-// <?php
-// $insert = false;
-//
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     // Collect POST data
-//     $name = $_POST['name'];
-//     $age = $_POST['age'];
-//     $gender = $_POST['gender'];
-//     $email = $_POST['email'];
-//     $phone = $_POST['phone'];
-//     $desc = $_POST['desc'];
-//
-//     // Database credentials
-//     $host = "localhost";
-//     $port = "5432";
-//     $dbname = "travel_form";
-//     $user = "odd";
-//     $password = "aezakmi";
-//
-//     // Connect to PostgreSQL
-//     $conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
-//
-//     if (!$conn) {
-//         die("❌ Connection failed: " . pg_last_error());
-//     }
-//
-//     // Prepare and execute INSERT query
-//     $sql = "INSERT INTO trip (name, age, gender, email, phone, other, dt) 
-//             VALUES ($1, $2, $3, $4, $5, $6, current_timestamp)";
-//
-//     $result = pg_query_params($conn, $sql, array($name, $age, $gender, $email, $phone, $desc));
-//
-//     if ($result) {
-//         $insert = true;
-//     } else {
-//         echo "❌ Error inserting record: " . pg_last_error($conn);
-//     }
-//
-//     // Close connection
-//     pg_close($conn);
-//
-//     header("Location: index.html");
-//     exit();
-//
-// }
-// ?>
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
@@ -78,11 +7,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = $_POST['phone'];
     $desc = $_POST['desc'];
 
-    $host = "localhost";
-    $port = "5432";
-    $dbname = "travel_form";
-    $user = "odd";
-    $password = "aezakmi";
+    $url = getenv("DATABASE_URL");
+    if ($url) {
+        $db = parse_url($url);
+        $host = $db["host"];
+        $port = $db["port"];
+        $user = $db["user"];
+        $password = $db["pass"];
+        $dbname = ltrim($db["path"], "/");
+    } else {
+        $host = "localhost";
+        $port = "5432";
+        $user = "odd";
+        $password = "aezakmi";
+        $dbname = "travel_form";
+    }
+
 
     $conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
 
@@ -117,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <img class="bg" src="lpu2.jpg" alt="IIT Kharagpur">
+    <img class="bg" src="lpu2.jpg" alt="LPU Punjab">
     <div class="container">
         <h1>Welcome to LPU Punjab US Trip form</h1>
         <p>Enter your details and submit this form to confirm your participation in the trip</p>
