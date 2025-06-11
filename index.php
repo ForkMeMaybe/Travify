@@ -72,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button class="btn">Submit</button> 
         </form>
     </div>
+    <script src="index.js"></script>
 </body>
 </html>
 
